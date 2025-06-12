@@ -25,12 +25,9 @@ class MainActivity : AppCompatActivity() {
 this implements Viewbinding rather than @Composable? If thats even comparable..
 ViewBinding had to be added in build gradle kts (s line 39)
 
-NEEDED ARGH smth about androidx.appcompat.app.AppCompatActivity?? MAVEN?????
-androidx.appcompat.app.AppCompatActivity
-
      */
 
-    private lateinit var binding: AcitivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     //Qs ans As+
     private val questions = arrayOf("Beantworte diese Frage mit 1.", "Beantworte diese Frage mit Zwei.", "Beantworte diese Frage mit.. einer Zahl")
@@ -39,13 +36,14 @@ androidx.appcompat.app.AppCompatActivity
 
     //setting up the stats and stuff
     private var currentOptionIndex= 0
+    private var currentQuestionIndex = 0
     private var score = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main) //!
+        setContentView(binding.root)
 
 
         enableEdgeToEdge()
@@ -63,7 +61,7 @@ androidx.appcompat.app.AppCompatActivity
                     binding.option3Button.setOnClickListener(){
                         checkAnswer(2)
                     }
-                    binding.restartButton.setOnClickListeenr{
+                    binding.restartButton.setOnClickListener{
                         restartQuiz()
                     }
 
@@ -77,16 +75,16 @@ androidx.appcompat.app.AppCompatActivity
     private fun correctButtonColor(buttonIndex: Int){
         when(buttonIndex){
             0 -> binding.option1Button.setBackgroundColor(Color.GREEN)
-            1 -> binding.option1Button.setBackgroundColor(Color.GREEN)
-            2 -> binding.option1Button.setBackgroundColor(Color.GREEN)
+            1 -> binding.option2Button.setBackgroundColor(Color.GREEN)
+            2 -> binding.option3Button.setBackgroundColor(Color.GREEN)
         }
     }
 
     private fun wrongbuttonColor(buttonIndex: Int){
         when(buttonIndex){
             0 -> binding.option1Button.setBackgroundColor(Color.RED)
-            1 -> binding.option1Button.setBackgroundColor(Color.RED)
-            2 -> binding.option1Button.setBackgroundColor(Color.RED)
+            1 -> binding.option2Button.setBackgroundColor(Color.RED)
+            2 -> binding.option3Button.setBackgroundColor(Color.RED)
         }
     }
 
@@ -102,11 +100,12 @@ androidx.appcompat.app.AppCompatActivity
         binding.restartButton.isEnabled = true //??
     }
 
-    private fun displayQuestion() {
+    private fun displayQuestion() { //instead of questions-> option[currentQuestInd oops
         binding.questionText.text = questions[currentQuestionIndex]
         binding.option1Button.text = questions[currentQuestionIndex][0]
-        binding.option1Button.text = questions[currentQuestionIndex][1]
-        binding.option1Button.text = questions[currentQuestionIndex][2]
+        binding.option2Button.text = questions[currentQuestionIndex][1]
+        binding.option3Button.text = questions[currentQuestionIndex][2]
+
         resetButtonColor()
     }
 
@@ -131,7 +130,7 @@ androidx.appcompat.app.AppCompatActivity
     private fun restartQuiz(){
         currentOptionIndex = 0
         score = 0
-        displayQuestions()
+        displayQuestion()
         binding.restartButton.isEnabled = false //or either         false.also { binding.restartButton.isEnabled = it }
     }
 
